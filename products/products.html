@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Shop | Premium Products</title>
+    
+    <!-- Tailwind CSS (Sirf utility ke liye rakha hai, main styling custom hai) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        /* --- GENERAL STYLES --- */
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            background: #1e293b;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; }
+
+        .nav-links { list-style: none; display: flex; gap: 20px; padding: 0; margin: 0; }
+        .nav-links a { color: white; text-decoration: none; font-weight: 500; transition: 0.3s; }
+        .nav-links a:hover { color: #38bdf8; }
+
+        .cart-count {
+            background: #ef4444; color: white; padding: 2px 6px;
+            border-radius: 50%; font-size: 12px; position: relative; top: -5px;
+        }
+
+        /* --- FILTER BAR --- */
+        .filter-bar {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sort-select { padding: 8px; border-radius: 6px; border: 1px solid #ddd; }
+
+        /* --- PRODUCT CONTAINER --- */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto 40px auto;
+            padding: 0 20px;
+            flex: 1;
+        }
+
+        /* --- PRODUCT LIST (Vertical Stack) --- */
+        .product-list {
+            display: flex;
+            flex-direction: column; /* Cards ek ke neechay ek */
+            gap: 20px;
+        }
+
+        /* --- HORIZONTAL CARD STYLES --- */
+        .product-card {
+            display: flex; /* Flexrow se image left, text right hoga */
+            flex-direction: row;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            overflow: hidden; /* Image corners round karne ke liye */
+            border: 1px solid #e5e7eb;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 240px; /* Fixed height for consistency */
+        }
+
+        .product-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-color: #38bdf8;
+        }
+
+        /* Image Side (Left - 35% width) */
+        .card-img-wrapper {
+            width: 35%;
+            min-width: 250px; /* Chota hone se rokne ke liye */
+            height: 100%;
+            position: relative;
+        }
+
+        .card-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Image stretch nahi hogi */
+        }
+
+        /* Content Side (Right - 65% width) */
+        .card-body {
+            width: 65%;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Content ko vertically center karega */
+        }
+
+        .card-body h3 { margin: 0 0 10px 0; color: #1e293b; font-size: 1.5rem; }
+        
+        .card-body p {
+            color: #64748b;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 3; /* 3 lines ke baad text cut ho jaye */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Price & Button Row */
+        .price-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Price left, Button right */
+            margin-top: auto; /* Bottom pe push karne ke liye */
+        }
+
+        .price { font-size: 1.8rem; font-weight: bold; color: #0f172a; }
+
+        .btn-add {
+            background-color: #1e293b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+
+        .btn-add:hover { background-color: #38bdf8; }
+
+        /* --- RESPONSIVE (Mobile par wapis Vertical Card) --- */
+        @media (max-width: 768px) {
+            .product-card {
+                flex-direction: column; /* Wapis upar neechay */
+                height: auto; /* Height auto taake content fit ho */
+            }
+
+            .card-img-wrapper {
+                width: 100%;
+                height: 200px;
+            }
+
+            .card-body {
+                width: 100%;
+                padding: 20px;
+            }
+            
+            .card-body h3 { font-size: 1.2rem; }
+            .price { font-size: 1.4rem; }
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: #1e293b;
+            color: #cbd5e1;
+            padding: 50px 0 20px;
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+        }
+
+        .footer-col h2 { color: white; margin-bottom: 15px; }
+        .footer-col ul { list-style: none; padding: 0; }
+        .footer-col ul li { margin-bottom: 8px; }
+        .footer-col a { color: #cbd5e1; text-decoration: none; }
+        .footer-col a:hover { color: #38bdf8; }
+
+        .f-social a { margin-right: 15px; font-size: 1.2rem; }
+        
+        .footer-bottom {
+            text-align: center;
+            border-top: 1px solid #334155;
+            margin-top: 40px;
+            padding-top: 20px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">MyShop</div>
+        <ul class="nav-links">
+            <li><a href="home/index,html">Home</a></li>
+            <li><a href="product/products.html" style="color: #38bdf8;">Products</a></li>
+            <li><a href="cart/cart.html">Cart <span id="cart-count" class="cart-count">0</span></a></li>
+            <li><a href="login/login.html">Login</a></li>
+        </ul>
+    </nav>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+        <h2>Latest Collection</h2>
+        <select class="sort-select">
+            <option>Sort by: Popularity</option>
+            <option>Price: Low to High</option>
+            <option>Price: High to Low</option>
+        </select>
+    </div>
+
+    <!-- Product List -->
+    <section class="container">
+        <div class="product-list">
+
+            <!-- Product 1: DSLR Camera -->
+            <div class="product-card">
+                <div class="card-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=600&q=80" alt="DSLR Camera">
+                </div>
+                <div class="card-body">
+                    <h3>DSLR Camera</h3>
+                    <p>Professional grade camera for stunning photography with 4K video support, high-speed shutter, and interchangeable lens compatibility.</p>
+                    <div class="price-row">
+                        <span class="price">$450</span>
+                        <button class="btn-add" onclick="addToCart(1, 'DSLR Camera', 450)">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 2: Headphones -->
+            <div class="product-card">
+                <div class="card-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80" alt="Headphones">
+                </div>
+                <div class="card-body">
+                    <h3>Sony Headphones</h3>
+                    <p>Premium noise cancelling wireless headphones with extra bass, 30-hour battery life, and comfortable memory foam ear cushions.</p>
+                    <div class="price-row">
+                        <span class="price">$150</span>
+                        <button class="btn-add" onclick="addToCart(2, 'Sony Headphones', 150)">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 3: Smart Watch -->
+            <div class="product-card">
+                <div class="card-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80" alt="Smart Watch">
+                </div>
+                <div class="card-body">
+                    <h3>Apple Watch</h3>
+                    <p>Track your fitness, heart rate, and notifications on the go. Features a waterproof design, Always-On Retina display, and ECG app.</p>
+                    <div class="price-row">
+                        <span class="price">$250</span>
+                        <button class="btn-add" onclick="addToCart(3, 'Apple Watch', 250)">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 4: Laptop -->
+            <div class="product-card">
+                <div class="card-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=600&q=80" alt="Laptop">
+                </div>
+                <div class="card-body">
+                    <h3>MacBook Pro</h3>
+                    <p>High performance laptop with M2 chip, suitable for coding, designing, and heavy video editing. Includes Liquid Retina XDR display.</p>
+                    <div class="price-row">
+                        <span class="price">$1200</span>
+                        <button class="btn-add" onclick="addToCart(4, 'MacBook Pro', 1200)">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 5: Smartphone -->
+            <div class="product-card">
+                <div class="card-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80" alt="Smartphone">
+                </div>
+                <div class="card-body">
+                    <h3>iPhone 14 Pro</h3>
+                    <p>Experience the latest technology with Dynamic Island, 48MP Pro camera system, A16 Bionic chip, and all-day battery life.</p>
+                    <div class="price-row">
+                        <span class="price">$999</span>
+                        <button class="btn-add" onclick="addToCart(5, 'iPhone 14 Pro', 999)">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h2>MyShop</h2>
+                <p>The best place to buy premium quality products at affordable prices.</p>
+                <div class="f-social" style="margin-top: 15px;">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Categories</h4>
+                <ul>
+                    <li><a href="#">Electronics</a></li>
+                    <li><a href="#">Fashion</a></li>
+                    <li><a href="#">Accessories</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <p><i class="fas fa-phone"></i> +92 300 1234567</p>
+                <p><i class="fas fa-envelope"></i> sales@myshop.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 MyShop. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        let cart = JSON.parse(localStorage.getItem('myCart')) || [];
+        updateCartCount();
+
+        function addToCart(id, name, price) {
+            const existingItem = cart.find(item => item.id === id);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({ id, name, price, quantity: 1 });
+            }
+            localStorage.setItem('myCart', JSON.stringify(cart));
+            updateCartCount();
+            alert(name + " added to cart!");
+        }
+
+        function updateCartCount() {
+            const count = cart.reduce((total, item) => total + item.quantity, 0);
+            document.getElementById('cart-count').innerText = count;
+        }
+    </script>
+</body>
+</html>

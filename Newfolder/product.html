@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products | My Shop</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        /* Smooth Fade In Animation */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Card Hover Effect */
+        .product-card:hover .cart-btn {
+            transform: scale(1);
+            opacity: 1;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 font-sans flex flex-col min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="bg-slate-900 p-4 sticky top-0 z-50 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center px-6">
+            <div class="text-white text-2xl font-extrabold tracking-wider">MyShop</div>
+            <ul class="flex space-x-8 text-white font-medium hidden md:flex">
+                <li><a href="../index2.html" class="hover:text-sky-400 transition">Home</a></li>
+                <li><a href="product2.html" class="text-sky-400 font-bold transition">Products</a></li>
+                <li>
+                    <a href="../cart/cart.html" class="hover:text-sky-400 transition relative">
+                        Cart 
+                        <span id="cart-count" class="absolute -top-2 -right-3 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">0</span>
+                    </a>
+                </li>
+                <li><a href="../login/login.html" class="hover:text-sky-400 transition">Login</a></li>
+            </ul>
+            <!-- Mobile Menu Icon -->
+            <div class="md:hidden text-white text-xl">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="bg-white shadow-sm py-8 mb-6">
+        <div class="container mx-auto px-6 text-center md:text-left">
+            <h1 id="page-title" class="text-3xl font-bold text-slate-800 capitalize">All Products</h1>
+            <p class="text-slate-500 mt-2">Browse our premium collection of <span id="total-items" class="font-bold text-sky-600">0</span> items</p>
+        </div>
+    </header>
+
+    <!-- Category Filters (Updated with Perfumes) -->
+    <div class="container mx-auto px-6 mb-12">
+        <!-- Flex container for centering items -->
+        <div class="flex flex-wrap justify-center gap-4">
+            
+            <!-- All -->
+            <div onclick="filterProducts('all')" class="w-32 md:w-36 cursor-pointer group block bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition border border-slate-100 transform hover:-translate-y-1">
+                <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&q=80" class="w-full h-24 object-cover group-hover:scale-105 transition duration-500">
+                <div class="p-2 text-center"><h3 class="text-xs md:text-sm font-bold text-slate-800">All</h3></div>
+            </div>
+
+            <!-- Electronics -->
+            <div onclick="filterProducts('electronics')" class="w-32 md:w-36 cursor-pointer group block bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition border border-slate-100 transform hover:-translate-y-1">
+                <img src="https://images.unsplash.com/photo-1498049860654-af1a5c5668ba?w=400&q=80" class="w-full h-24 object-cover group-hover:scale-105 transition duration-500">
+                <div class="p-2 text-center"><h3 class="text-xs md:text-sm font-bold text-slate-800">Electronics</h3></div>
+            </div>
+
+            <!-- Women -->
+            <div onclick="filterProducts('fashion')" class="w-32 md:w-36 cursor-pointer group block bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition border border-slate-100 transform hover:-translate-y-1">
+                <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400&q=80" class="w-full h-24 object-cover group-hover:scale-105 transition duration-500">
+                <div class="p-2 text-center"><h3 class="text-xs md:text-sm font-bold text-slate-800">Women</h3></div>
+            </div>
+
+            <!-- Men -->
+            <div onclick="filterProducts('men')" class="w-32 md:w-36 cursor-pointer group block bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition border border-slate-100 transform hover:-translate-y-1">
+                <img src="https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?w=400&q=80" class="w-full h-24 object-cover group-hover:scale-105 transition duration-500">
+                <div class="p-2 text-center"><h3 class="text-xs md:text-sm font-bold text-slate-800">Men</h3></div>
+            </div>
+
+            <!-- Jewelry -->
+            <div onclick="filterProducts('jewelry')" class="w-32 md:w-36 cursor-pointer group block bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition border border-slate-100 transform hover:-translate-y-1">
+                <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&q=80" class="w-full h-24 object-cover group-hover:scale-105 transition duration-500">
+                <div class="p-2 text-center"><h3 class="text-xs md:text-sm font-bold text-slate-800">Jewelry</h3></div>
+            </div>
+
+            <!-- Perfumes (NEW) -->
+            <div onclick="filterProducts('perfume')" class="w-32 md:w-36 cursor-pointer group block bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition border border-slate-100 transform hover:-translate-y-1">
+                <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&q=80" class="w-full h-24 object-cover group-hover:scale-105 transition duration-500">
+                <div class="p-2 text-center"><h3 class="text-xs md:text-sm font-bold text-slate-800">Perfumes</h3></div>
+            </div>
+
+            <!-- Accessories -->
+            <div onclick="filterProducts('accessories')" class="w-32 md:w-36 cursor-pointer group block bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition border border-slate-100 transform hover:-translate-y-1">
+                <img src="https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=400&q=80" class="w-full h-24 object-cover group-hover:scale-105 transition duration-500">
+                <div class="p-2 text-center"><h3 class="text-xs md:text-sm font-bold text-slate-800">Accessories</h3></div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Products Grid -->
+    <section class="container mx-auto px-6 pb-20">
+        <div id="product-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Products injected via JS -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-300 py-8 mt-auto">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
+            <div class="text-lg font-bold text-white mb-4 md:mb-0">MyShop</div>
+            <div class="text-sm">
+                © 2026 MyShop. All rights reserved.
+            </div>
+            <div class="flex space-x-4 mt-4 md:mt-0">
+                <a href="#" class="hover:text-white"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="hover:text-white"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="hover:text-white"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // ==========================================
+        // 1. EXTENSIVE PRODUCT DATABASE (60+ Items)
+        // ==========================================
+        const products = [
+            // --- ELECTRONICS ---
+            { id: 101, name: "Sony WH-1000XM5", category: "electronics", price: 349, image: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=600&q=80" },
+            { id: 102, name: "MacBook Pro M2", category: "electronics", price: 2499, image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca4?w=600&q=80" },
+            { id: 103, name: "Canon EOS R5", category: "electronics", price: 3899, image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&q=80" },
+            { id: 104, name: "Mechanical Keyboard", category: "electronics", price: 129, image: "https://images.unsplash.com/photo-1587829741301-dc798b91a603?w=600&q=80" },
+            { id: 105, name: "Logitech Gaming Mouse", category: "electronics", price: 59, image: "https://images.unsplash.com/photo-1527814050087-3793815479db?w=600&q=80" },
+            { id: 106, name: "DJI Mini Drone", category: "electronics", price: 799, image: "https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=600&q=80" },
+            { id: 107, name: "Samsung Galaxy Tab", category: "electronics", price: 499, image: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&q=80" },
+            { id: 108, name: "JBL Bluetooth Speaker", category: "electronics", price: 110, image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=600&q=80" },
+            { id: 109, name: "4K Gaming Monitor", category: "electronics", price: 450, image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=600&q=80" },
+            { id: 110, name: "GoPro Hero 11", category: "electronics", price: 399, image: "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?w=600&q=80" },
+            { id: 111, name: "Wireless Charger Pad", category: "electronics", price: 30, image: "https://images.unsplash.com/photo-1615526675159-e248c3021d3f?w=600&q=80" },
+            { id: 112, name: "Smart Home Hub", category: "electronics", price: 89, image: "https://images.unsplash.com/photo-1558002038-1091a1661116?w=600&q=80" },
+
+            // --- WOMEN'S FASHION ---
+            { id: 201, name: "Summer Floral Dress", category: "fashion", price: 49, image: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=600&q=80" },
+            { id: 202, name: "Luxury Leather Handbag", category: "fashion", price: 150, image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600&q=80" },
+            { id: 203, name: "Red Stiletto Heels", category: "fashion", price: 89, image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=600&q=80" },
+            { id: 204, name: "Wool Winter Coat", category: "fashion", price: 199, image: "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=600&q=80" },
+            { id: 205, name: "Silk Scarf", category: "fashion", price: 35, image: "https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=600&q=80" },
+            { id: 206, name: "Denim Skirt", category: "fashion", price: 45, image: "https://images.unsplash.com/photo-1609357602737-78ac298a86f6?w=600&q=80" },
+            { id: 207, name: "Casual White Blouse", category: "fashion", price: 40, image: "https://images.unsplash.com/photo-1598532163257-ae3c6b2524b6?w=600&q=80" },
+            { id: 208, name: "Yoga Leggings", category: "fashion", price: 25, image: "https://images.unsplash.com/photo-1506619216599-9d16d0903dfd?w=600&q=80" },
+            { id: 209, name: "Cat Eye Sunglasses", category: "fashion", price: 60, image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600&q=80" },
+            { id: 210, name: "Designer Belt", category: "fashion", price: 110, image: "https://images.unsplash.com/photo-1617137968427-85924c800a22?w=600&q=80" },
+
+            // --- MEN'S FASHION ---
+            { id: 301, name: "Denim Trucker Jacket", category: "men", price: 89, image: "https://images.unsplash.com/photo-1520975954732-35dd22299614?w=600&q=80" },
+            { id: 302, name: "Leather Work Boots", category: "men", price: 120, image: "https://images.unsplash.com/photo-1638247025967-b4e38f787b76?w=600&q=80" },
+            { id: 303, name: "White Sneakers", category: "men", price: 75, image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600&q=80" },
+            { id: 304, name: "Navy Blue Suit", category: "men", price: 299, image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=600&q=80" },
+            { id: 305, name: "Urban Hoodie", category: "men", price: 55, image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600&q=80" },
+            { id: 306, name: "Slim Fit Chinos", category: "men", price: 50, image: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=600&q=80" },
+            { id: 307, name: "Oxford Shirt", category: "men", price: 45, image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=600&q=80" },
+            { id: 308, name: "Leather Wallet", category: "men", price: 35, image: "https://images.unsplash.com/photo-1627123424574-181ce5171c98?w=600&q=80" },
+            { id: 309, name: "Polo T-Shirt", category: "men", price: 25, image: "https://images.unsplash.com/photo-1626557981101-aae6f84aa6ff?w=600&q=80" },
+            { id: 310, name: "Aviator Sunglasses", category: "men", price: 95, image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600&q=80" },
+
+            // --- JEWELRY ---
+            { id: 401, name: "Diamond Ring", category: "jewelry", price: 1200, image: "https://images.unsplash.com/photo-1605100804763-eb2fc6f2ce98?w=600&q=80" },
+            { id: 402, name: "Gold Necklace", category: "jewelry", price: 450, image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&q=80" },
+            { id: 403, name: "Pearl Earrings", category: "jewelry", price: 180, image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=600&q=80" },
+            { id: 404, name: "Silver Bracelet", category: "jewelry", price: 90, image: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=600&q=80" },
+            { id: 405, name: "Rose Gold Pendant", category: "jewelry", price: 210, image: "https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=600&q=80" },
+            { id: 406, name: "Engagement Ring", category: "jewelry", price: 3000, image: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=600&q=80" },
+            { id: 407, name: "Men's Signet Ring", category: "jewelry", price: 150, image: "https://images.unsplash.com/photo-1605218427368-35b019b8a394?w=600&q=80" },
+            { id: 408, name: "Boho Choker", category: "jewelry", price: 25, image: "https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=600&q=80" },
+            
+            // --- NEW: PERFUMES (10 Items) ---
+            { id: 601, name: "Chanel Coco Mademoiselle", category: "perfume", price: 135, image: "https://images.unsplash.com/photo-1541643600914-78b084683601?w=600&q=80" },
+            { id: 602, name: "Dior Sauvage Elixir", category: "perfume", price: 150, image: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=600&q=80" }, // Note: Placeholder image
+            { id: 603, name: "Versace Eros", category: "perfume", price: 95, image: "https://images.unsplash.com/photo-1594035910387-fea4779426e9?w=600&q=80" },
+            { id: 604, name: "Gucci Bloom", category: "perfume", price: 110, image: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=600&q=80" },
+            { id: 605, name: "Tom Ford Black Orchid", category: "perfume", price: 190, image: "https://images.unsplash.com/photo-1587017539504-67cfb48032da?w=600&q=80" },
+            { id: 606, name: "YSL Libre", category: "perfume", price: 125, image: "https://images.unsplash.com/photo-1595425970377-c9703cf48b6d?w=600&q=80" },
+            { id: 607, name: "Bleu de Chanel", category: "perfume", price: 145, image: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=600&q=80" }, 
+            { id: 608, name: "Jo Malone London", category: "perfume", price: 85, image: "https://images.unsplash.com/photo-1615163229653-2b952a2334e2?w=600&q=80" },
+            { id: 609, name: "Calvin Klein One", category: "perfume", price: 45, image: "https://images.unsplash.com/photo-1622618991746-fe6004db3fe3?w=600&q=80" },
+            { id: 610, name: "Baccarat Rouge 540", category: "perfume", price: 320, image: "https://images.unsplash.com/photo-1592914610354-fd354ea45e48?w=600&q=80" },
+
+            // --- ACCESSORIES ---
+            { id: 501, name: "Apple Watch Series 9", category: "accessories", price: 399, image: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=600&q=80" },
+            { id: 502, name: "Classic Leather Watch", category: "accessories", price: 150, image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=600&q=80" },
+            { id: 503, name: "Travel Backpack", category: "accessories", price: 85, image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&q=80" },
+            { id: 504, name: "Sports Cap", category: "accessories", price: 25, image: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=600&q=80" },
+            { id: 505, name: "Leather Gloves", category: "accessories", price: 45, image: "https://images.unsplash.com/photo-1517228817757-d35252875b4f?w=600&q=80" },
+            { id: 506, name: "Silk Tie", category: "accessories", price: 30, image: "https://images.unsplash.com/photo-1589756823695-278bc8f3f99d?w=600&q=80" },
+            { id: 507, name: "Cotton Socks Set", category: "accessories", price: 15, image: "https://images.unsplash.com/photo-1586350977771-b3b0abd50f82?w=600&q=80" },
+            { id: 508, name: "Laptop Sleeve", category: "accessories", price: 35, image: "https://images.unsplash.com/photo-1606229338670-b6f42a5e6954?w=600&q=80" }
+        ];
+
+        // ==========================================
+        // 2. RENDER LOGIC
+        // ==========================================
+        const productContainer = document.getElementById('product-container');
+        const pageTitle = document.getElementById('page-title');
+        const totalItemsSpan = document.getElementById('total-items');
+
+        function renderProducts(filterCategory) {
+            productContainer.innerHTML = ""; // Clear existing
+
+            // 1. Filter Data
+            const filteredData = filterCategory === 'all'
+                ? products
+                : products.filter(p => p.category === filterCategory);
+
+            // 2. Update Header Info
+            totalItemsSpan.innerText = filteredData.length;
+            
+            const titles = {
+                'all': 'All Products',
+                'electronics': 'Electronics & Gadgets',
+                'fashion': "Women's Fashion",
+                'men': "Men's Collection",
+                'jewelry': "Premium Jewelry",
+                'perfume': "Luxury Fragrances",
+                'accessories': "Accessories & Watches"
+            };
+            pageTitle.innerText = titles[filterCategory] || 'Products';
+
+            // 3. Handle Empty State
+            if (filteredData.length === 0) {
+                productContainer.innerHTML = `
+                    <div class="col-span-full text-center py-20">
+                        <i class="fas fa-box-open text-6xl text-slate-200 mb-4"></i>
+                        <p class="text-xl text-slate-500 font-medium">No products found in this category.</p>
+                    </div>`;
+                return;
+            }
+
+            // 4. Generate Cards
+            filteredData.forEach(product => {
+                const card = `
+                    <div class="product-card bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-xl transition duration-300 fade-in flex flex-col h-full group relative">
+                        <!-- Image Area -->
+                        <div class="relative h-64 overflow-hidden bg-gray-50">
+                            <img src="${product.image}" alt="${product.name}" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                            
+                            <!-- Floating Add to Cart Button -->
+                            <button onclick="addToCart(${product.id}, this)" 
+                                class="cart-btn absolute bottom-4 right-4 bg-sky-500 text-white w-12 h-12 flex items-center justify-center rounded-full shadow-lg hover:bg-sky-600 transition transform translate-y-2 opacity-90 md:opacity-0 md:translate-y-4 z-10">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+
+                        <!-- Content Area -->
+                        <div class="p-5 flex flex-col flex-grow">
+                            <div class="mb-2">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-slate-100 px-2 py-1 rounded inline-block">${product.category}</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-800 mb-2 leading-tight group-hover:text-sky-600 transition">${product.name}</h3>
+                            
+                            <div class="mt-auto flex justify-between items-end border-t border-slate-50 pt-3">
+                                <span class="text-xl font-extrabold text-slate-900">$${product.price}</span>
+                                <a href="details.html?id=${product.id}" class="text-sm font-medium text-sky-500 hover:text-sky-700 hover:underline">
+                                    View Details <i class="fas fa-arrow-right text-xs ml-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                productContainer.innerHTML += card;
+            });
+        }
+
+        // ==========================================
+        // 3. CART FUNCTIONALITY
+        // ==========================================
+        let cart = JSON.parse(localStorage.getItem('myCart')) || [];
+
+        function updateCartCount() {
+            const count = cart.reduce((total, item) => total + item.quantity, 0);
+            const badge = document.getElementById('cart-count');
+            badge.innerText = count;
+            
+            if(count > 0) {
+                badge.classList.remove('scale-100');
+                badge.classList.add('scale-125');
+                setTimeout(() => badge.classList.remove('scale-125'), 200);
+            }
+        }
+
+        function addToCart(productId, btnElement) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+
+            localStorage.setItem('myCart', JSON.stringify(cart));
+            updateCartCount();
+
+            // Button Feedback Animation
+            const icon = btnElement.querySelector('i');
+            const originalClass = icon.className;
+            
+            btnElement.classList.replace('bg-sky-500', 'bg-green-500');
+            btnElement.classList.replace('hover:bg-sky-600', 'hover:bg-green-600');
+            icon.className = "fas fa-check";
+            
+            // SweetAlert Notification
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: `${product.name} added to cart!`
+            });
+
+            // Reset Button
+            setTimeout(() => {
+                btnElement.classList.replace('bg-green-500', 'bg-sky-500');
+                btnElement.classList.replace('hover:bg-green-600', 'hover:bg-sky-600');
+                icon.className = originalClass;
+            }, 1500);
+        }
+
+        // Check URL for direct category filtering
+        function checkUrlParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const category = urlParams.get('cat');
+            renderProducts(category || 'all');
+        }
+
+        // Initialize
+        checkUrlParams();
+        updateCartCount();
+
+        // Expose functions to window
+        window.filterProducts = renderProducts;
+        window.addToCart = addToCart;
+
+    </script>
+</body>
+</html>

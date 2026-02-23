@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Shop | Login</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        /* --- GENERAL --- */
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            background: #1e293b;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            padding: 0;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #38bdf8;
+        }
+
+        /* --- LOGIN CONTAINER --- */
+        .login-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .login-card {
+            background: white;
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .login-card h2 {
+            margin-bottom: 20px;
+            color: #1e293b;
+        }
+
+        .input-group {
+            text-align: left;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #38bdf8;
+        }
+
+        /* Eye Icon for Password */
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 38px;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        /* Actions (Remember me & Forgot Pass) */
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 20px;
+            color: #64748b;
+        }
+
+        .actions a {
+            text-decoration: none;
+            color: #0ea5e9;
+        }
+
+        /* Login Button */
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: #1e293b;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-login:hover {
+            background: #0ea5e9;
+        }
+
+        /* Social Login */
+        .social-login {
+            margin-top: 20px;
+        }
+
+        .social-login p {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 10px;
+        }
+
+        .social-icons-login {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .social-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.3s;
+            color: #1e293b;
+        }
+
+        .social-btn:hover {
+            background: #f1f5f9;
+            transform: scale(1.1);
+        }
+
+        .social-btn.google {
+            color: #DB4437;
+        }
+
+        .social-btn.facebook {
+            color: #4267B2;
+        }
+
+        /* Footer Integration (Same Style) */
+        footer {
+            background-color: #1e293b;
+            color: #cbd5e1;
+            padding: 50px 0 0 0;
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px 20px 40px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: space-between;
+        }
+
+        .footer-col {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .footer-col h2,
+        .footer-col h4 {
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-col ul li a {
+            color: #cbd5e1;
+            text-decoration: none;
+            line-height: 2;
+            transition: 0.3s;
+        }
+
+        .footer-col ul li a:hover {
+            color: #38bdf8;
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #334155;
+            padding: 20px;
+            text-align: center;
+            color: #64748b;
+            font-size: 13px;
+            margin-top: 20px;
+        }
+
+        /* Footer Social Icons */
+        .f-social a {
+            display: inline-block;
+            width: 35px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            text-align: center;
+            line-height: 35px;
+            border-radius: 50%;
+            margin-right: 10px;
+            transition: 0.3s;
+        }
+
+        .f-social a:hover {
+            background: #38bdf8;
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">MyShop</div>
+        <ul class="nav-links">
+            <li><a href="../index2.html">Home</a></li>
+            <li><a href="../products/product2.html">Products</a></li>
+            <li><a href="../cart/cart.html">Cart</a></li>
+            <li><a href="login.html" style="color: #38bdf8;">Login</a></li>
+        </ul>
+    </nav>
+
+    <!-- Login Section -->
+    <div class="login-wrapper">
+        <div class="login-card">
+            <h2>Welcome Back</h2>
+            <form id="loginForm" onsubmit="return validateLogin(event)">
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                    <i class="fas fa-eye toggle-password" onclick="togglePassword()"></i>
+                </div>
+
+                <div class="actions">
+                    <label><input type="checkbox"> Remember me</label>
+                    <a href="#">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="btn-login">Login</button>
+            </form>
+
+            <div class="social-login">
+                <p>Or login with</p>
+                <div class="social-icons-login">
+                    <div class="social-btn google"><i class="fab fa-google"></i></div>
+                    <div class="social-btn facebook"><i class="fab fa-facebook-f"></i></div>
+                </div>
+            </div>
+
+            <p style="margin-top: 20px; font-size: 14px;">
+                Don't have an account? <a href="#" style="color: #0ea5e9; text-decoration: none;">Sign up</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- The Big Footer (Same as requested) -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h2>MyShop</h2>
+                <p>Premium shopping experience.</p>
+                <div class="f-social">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="cart.html">My Cart</a></li>
+                    <li><a href="#">Account</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <p><i class="fas fa-phone"></i> +92 300 1234567</p>
+                <p><i class="fas fa-envelope"></i> help@myshop.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 MyShop. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Script for Password Toggle & Validation -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // Password Show/Hide Feature
+        function togglePassword() {
+            const passwordField = document.getElementById("password");
+            const icon = document.querySelector(".toggle-password");
+
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                passwordField.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        }
+
+        // Simple Login Validation
+        function validateLogin(event) {
+            event.preventDefault(); // Stop page reload
+
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            if (email === "" || password === "") {
+                alert("Please fill in all fields!");
+                return false;
+            }
+
+            // Fake Login Success
+            Swal.fire({
+                title: "Login Successfull",
+                text: "Aap Sussfully Login Ho gay ho",
+                icon: "success",
+                timer: 1500, // 1.5 second baad khud band ho jayega
+                showConfirmButton: false // 'OK' button hide karne ke liye
+            });
+            setTimeout(function () {
+                window.location.href = "../index2.html"; // Redirect to home
+            }, 1000);
+        }
+    </script>
+</body>
+
+</html>

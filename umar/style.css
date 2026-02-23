@@ -1,0 +1,160 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Announcement Bar */
+.announcement-bar {
+    background: #000;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+/* Header */
+header {
+    background: #fff;
+    padding: 20px 0;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo img {
+    width: 180px;
+}
+
+.desktop-nav ul {
+    display: flex;
+    list-style: none;
+}
+
+.desktop-nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 0 15px;
+    transition: 0.3s;
+}
+
+.header-icons i {
+    margin-left: 15px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* Slider */
+.main-slider {
+    width: 100%;
+    height: auto;
+}
+
+.main-slider img {
+    width: 100%;
+    display: block;
+}
+
+/* Categories */
+.categories {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin: 50px auto;
+}
+
+.category-card {
+    text-align: center;
+    cursor: pointer;
+}
+
+.category-card img {
+    width: 100%;
+    transition: transform 0.5s;
+}
+
+.category-card:hover img {
+    transform: scale(1.05);
+}
+
+.category-card h3 {
+    margin-top: 15px;
+    font-size: 16px;
+    letter-spacing: 1px;
+}
+
+/* Footer */
+footer {
+    background: #f8f8f8;
+    padding: 60px 0 20px;
+    margin-top: 50px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+}
+
+footer h4 {
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+footer ul {
+    list-style: none;
+}
+
+footer ul li {
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: #666;
+    cursor: pointer;
+}
+
+.newsletter input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+.newsletter button {
+    background: #000;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 12px;
+    color: #999;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .desktop-nav { display: none; }
+    .categories { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+}
